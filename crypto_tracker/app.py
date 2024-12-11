@@ -13,6 +13,7 @@ def home():
 def get_crypto_prices(cryptos):
     crypto_list = cryptos.split(",")
     prices = CryptoModel.fetch_crypto_prices(crypto_list)
+   
     if prices:
         return CryptoView.render_price(prices)
     else:
