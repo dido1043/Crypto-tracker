@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Crypto tracker"
+    return CryptoView.render_home_view()
 
 @app.route('/cryptos/<cryptos>')
 def get_crypto_prices(cryptos):
