@@ -8,11 +8,11 @@
 <body>
     <h1>Cryptocurrency Prices</h1>
     <ul>
-        {
-        {% for crypto, data in  %}
-            
+        
+        {% for crypto, data in  prices.items() %}
+            <li>{{crypto.capitalize()}}: ${{data['usd']}}</li>
         {% endfor %}
-            }
+        
     </ul>
 </body>
 </html>
