@@ -1,39 +1,22 @@
 import requests
 from flask import Flask
+from model import CryptoModel 
+from view import CryptoView
 
 app = Flask(__name__)
-
-
-
-def fetch_crypto_price(crypto, currency='usd'):
-    url = f"https://api.coingecko.com/api/v3/simple/price?ids={crypto}&vs_currencies={currency}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        return data[crypto][currency]
-    else:
-        print("Error fetching data")
-        return 
-
-
-crypto_name = "bitcoin"
-price = fetch_crypto_price(crypto_name)
-if price:
-    print(f"The current price of {crypto_name.capitalize()} is ${price:.2f}.")
 
 @app.route('/')
 def home():
     return "Crypto tracker"
 
-@app.route('/crypto/<crypto_name>')
-def main(crypto_name):
-    
-    price = fetch_crypto_price(crypto_name)
-    if price :
-        return f"{crypto_name} ->{price}"
+@app.route('/cryptos/<cryptos>')
+def get_crypto_prices(cryptos):
+    crypto_list = cryptos.split(",")
+    prices = CryptoModel.fetch_crypto_prices(crypto_list)
+    if prices:
+        return CryptoView.render_price(prices)
     else:
-        return "Error!!!"
-
+        return "Error fetching data"
 
 if __name__ == '__main__':
     app.run(debug=True)
